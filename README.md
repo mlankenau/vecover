@@ -33,3 +33,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
   4. In vim...
 
         :so coverage.vim
+
+## Credits
+
+The vim code is a copy of nyarly/Simplecov-Vim. Thanx for the work!
