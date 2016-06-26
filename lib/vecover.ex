@@ -100,7 +100,7 @@ defmodule Vecover do
 
       content =
         String.replace(@template, "__PLACEHOLDER__", coverage)
-        |> String.replace("__GENERATED_TIME__", Integer.to_string(:erlang.system_time/1000000))
+        |> String.replace("__GENERATED_TIME__", Integer.to_string(div(:erlang.system_time, 1000000)))
       File.write("coverage.vim", content)
     end
   end
