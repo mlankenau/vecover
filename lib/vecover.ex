@@ -135,7 +135,13 @@ defmodule Vecover do
   end
 
   def module_to_path(mod) do
-    path_chain = mod |> Atom.to_string |> String.split(".") |> tl |> Enum.map(fn(e) -> pascal_to_cebab(e) end) |> Enum.join("/")
+    path_chain = mod
+                 |> Atom.to_string
+                 |> String.split(".")
+                 |> IO.inspect
+                 |> tl # to remove the Elixir-base module
+                 |> Enum.map(fn(e) -> pascal_to_cebab(e) end)
+                 |> Enum.join("/")
     "./lib/#{path_chain}.ex"
   end
 
