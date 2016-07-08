@@ -119,8 +119,8 @@ defmodule Vecover do
     |> Enum.map(fn({src, lines}) ->
       {
         src,
-        Enum.filter(lines, fn(l) -> elem(l,2) == 1 && elem(l,1) > 0 end) |> Enum.map(&(elem &1, 1)),
-        Enum.filter(lines, fn(l) -> elem(l,2) == 0 && elem(l,1) > 0 end) |> Enum.map(&(elem &1, 1))
+        Enum.filter(lines, fn({_, lines, mark}) -> mark == 1 && lines > 0 end) |> Enum.map(&(elem &1, 1)),
+        Enum.filter(lines, fn({_, lines, mark}) -> mark == 0 && lines > 0 end) |> Enum.map(&(elem &1, 1))
       }
     end)
     |> Enum.map(fn({src, good, bad}) -> "'#{src}': [#{list_to_str good}, #{list_to_str bad}] " end)
