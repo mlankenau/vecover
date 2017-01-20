@@ -11,7 +11,7 @@ defmodule Vecover.Mixfile do
      spec_paths: ["spec"],
      spec_pattern: "*_spec.exs",
      preferred_cli_env: [espec: :test],
-     deps: deps]
+     deps: deps()]
   end
 
   def application do
