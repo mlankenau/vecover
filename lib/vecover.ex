@@ -96,7 +96,7 @@ defmodule Vecover do
                    {:ok, lines} = :cover.analyze(mod, :line)
                    lines
                  end)
-                 |> generate_vim_data
+                 |> generate_vim_data()
 
       content =
         String.replace(@template, "__PLACEHOLDER__", coverage)
@@ -105,12 +105,32 @@ defmodule Vecover do
     end
   end
 
+  def module_map() do
+    {output, 0} = System.cmd("grep", ["-ri", "defmodule",  "."])
+    output
+    |> String.split("\n")
+    |> Enum.map(fn(l) ->
+      ~r/([^:]+):.*defmodule +(.*) +/
+      |> Regex.run(l)
+      |> case do
+        [_all, file, module_name] ->
+          {"Elixir." <> module_name, file}
+        _ ->
+          nil
+      end
+    end)
+    |> Enum.filter(fn(e) -> e end)
+    |> Enum.into(%{})
+    |> IO.inspect
+  end
+
   def generate_vim_data(list) do
+    mod_map = module_map()
     list
     |> Enum.map(fn(lines) ->
       lines |> Enum.map(fn(line) ->
         {{module, line}, {coverred, _uncovered}} = line
-        path = module_to_path(module)
+        path = mod_map[Atom.to_string(module)]
         {path, line, coverred}
       end)
     end)
@@ -132,15 +152,5 @@ defmodule Vecover do
               |> Enum.map(fn(i) -> Integer.to_string(i) end)
               |> Enum.join(", ")
     "[#{entries}]"
-  end
-
-  def module_to_path(mod) do
-    path_chain = mod |> Atom.to_string |> String.split(".") |> tl |> Enum.map(fn(e) -> pascal_to_cebab(e) end) |> Enum.join("/")
-    "./lib/#{path_chain}.ex"
-  end
-
-  def pascal_to_cebab(str) do
-    << "_", rem::binary >> = Regex.replace(~r/([A-Z])/, str, fn(x) -> "_" <> String.downcase(x) end, global: true)
-    rem
   end
 end
