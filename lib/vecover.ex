@@ -87,7 +87,7 @@ defmodule Vecover do
   Cov
   """
 
-  def start(compile_path, opts) do
+  def start(compile_path, _opts) do
     :cover.start
     :cover.compile_beam_directory(compile_path |> to_char_list)
 
