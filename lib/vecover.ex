@@ -121,7 +121,6 @@ defmodule Vecover do
     end)
     |> Enum.filter(fn(e) -> e end)
     |> Enum.into(%{})
-    |> IO.inspect
   end
 
   def generate_vim_data(list) do
