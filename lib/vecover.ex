@@ -142,6 +142,7 @@ defmodule Vecover do
         Enum.filter(lines, fn({_, lines, mark}) -> mark == 0 && lines > 0 end) |> Enum.map(&(elem &1, 1))
       }
     end)
+    |> Enum.filter(fn({src, _good, _bad}) -> src end)
     |> Enum.map(fn({src, good, bad}) -> "'#{src}': [#{list_to_str good}, #{list_to_str bad}] " end)
     |> Enum.join(",")
   end
